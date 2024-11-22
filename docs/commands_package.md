@@ -182,3 +182,29 @@ def load():
 ---
 
 This setup enables you to extend the functionality of `cli_tool` dynamically by creating, installing, and managing modular command packages!
+
+### **Install cli tool and cli tool commands locally**
+
+Use powershell
+
+```bash
+cd C:\\atari-monk\\code\\cli_tool
+```
+
+```bash
+pip install .
+```
+
+```bash
+cd C:\\atari-monk\\code\\cli_commands
+```
+
+```bash
+pip install .
+```
+
+Make sure both are on list. Custom commands should work.
+
+```bash
+pip list
+```
