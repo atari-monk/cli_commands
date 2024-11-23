@@ -3,13 +3,15 @@ import yt_dlp
 
 class VideoToMp3():
     
-    def run(self, *args):
-        if len(args) != 2:
-            print("Error: Two argument required - video_url, output_folder.")
+    def run(self, args: str):
+        argsList = args.split()
+        print("argsList:", argsList, "Length:", len(argsList))
+        if len(argsList) != 2:
+            print("Error: Two arguments are required - video_url and output_folder.")
             return
 
-        video_url = args[0]
-        output_folder = args[1]
+        video_url = argsList[0]
+        output_folder = argsList[1]
 
         try:
             if not self._is_valid_video_url(video_url):

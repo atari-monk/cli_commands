@@ -9,7 +9,7 @@ setup(
             "custom_commands = cli_commands.custom_commands:load",
         ],
     },
-    install_requires=[],
+    install_requires=["yt-dlp>=2023.3.1",],
     description="A custom commands package for CLI Tool",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
