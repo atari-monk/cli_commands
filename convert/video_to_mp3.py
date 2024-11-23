@@ -1,13 +1,16 @@
 import os
 import yt_dlp
+from cli_logger.logger import setup_logger, LoggerConfig
+
+logger = setup_logger(__name__, LoggerConfig)
 
 class VideoToMp3():
     
     def run(self, args: str):
         argsList = args.split()
-        print("argsList:", argsList, "Length:", len(argsList))
+        logger.debug("argsList:", argsList, "Length:", len(argsList))
         if len(argsList) != 2:
-            print("Error: Two arguments are required - video_url and output_folder.")
+            logger.error("Error: Two arguments are required - video_url and output_folder.")
             return
 
         video_url = argsList[0]
@@ -15,19 +18,19 @@ class VideoToMp3():
 
         try:
             if not self._is_valid_video_url(video_url):
-                print("Invalid video URL format. URL must be a valid YouTube link.")
+                logger.error("Invalid video URL format. URL must be a valid YouTube link.")
                 return
             
             if not self._is_valid_output_folder(output_folder):
-                print(f"Invalid output folder path: {output_folder}. Please provide a valid writable directory.")
+                logger.error(f"Invalid output folder path: {output_folder}. Please provide a valid writable directory.")
                 return
             
             self._download_youtube_as_mp3(video_url, output_folder)
 
         except ValueError as e:
-            print(f"Error: {e}.")
+            logger.error(f"Error: {e}.")
         except Exception as e:
-            print(f"Unexpected Error: {str(e)}")
+            logger.error(f"Unexpected Error: {str(e)}")
 
     def _is_valid_video_url(self, video_url):
         return isinstance(video_url, str) and ("youtube.com/watch?v=" in video_url or "youtu.be/" in video_url)
@@ -65,7 +68,7 @@ class VideoToMp3():
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                 ydl.download([video_url])
             
-            print("Download and conversion to MP3 completed.")
+            logger.info("Download and conversion to MP3 completed.")
         
         except Exception as e:
-            print(f"Error: {str(e)}")
+            logger.error(f"Error: {str(e)}")
