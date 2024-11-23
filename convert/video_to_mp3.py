@@ -1,8 +1,9 @@
 import os
 import yt_dlp
-from cli_logger.logger import setup_logger, LoggerConfig
+from cli_logger.logger import setup_logger
+from cli_commands.config import LOGGER_CONFIG
 
-logger = setup_logger(__name__, LoggerConfig)
+logger = setup_logger(__name__, LOGGER_CONFIG)
 
 class VideoToMp3():
     
