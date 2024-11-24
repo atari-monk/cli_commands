@@ -3,7 +3,7 @@ import yt_dlp
 from cli_logger.logger import setup_logger
 from cli_commands.config import LOGGER_CONFIG
 from keyval_storage.storage import KeyValueStorage
-from pathlib import Path
+from pytoolbox.file_system import ensure_folder_exists
 
 logger = setup_logger(__name__, LOGGER_CONFIG)
 
@@ -31,14 +31,14 @@ class VideoToMp3():
             logger.error("Invalid video URL format. URL must be a valid YouTube link.")
             return
         
-        self._ensure_folder_exists(CLI_TOOL_PATH)
+        ensure_folder_exists(CLI_TOOL_PATH)
         storage = KeyValueStorage(os.path.join(CLI_TOOL_PATH, STORAGE_FILE))
 
         if not self._output_folder:
             output_folder = input("Provide folder to store downloads> ").strip()
             
             try:
-                if self._ensure_folder_exists(output_folder):
+                if ensure_folder_exists(output_folder):
                     self._output_folder = output_folder
             except Exception as e:
                 logger.error(f"Error: {e}")
@@ -54,22 +54,6 @@ class VideoToMp3():
             logger.error(f"Error: {e}.")
         except Exception as e:
             logger.error(f"Unexpected Error: {str(e)}")
-
-    def _ensure_folder_exists(self, folder_path: str) -> bool:
-        folder = Path(folder_path)
-        
-        if not folder.exists():
-            logger.info(f"Folder does not exist. Creating: {folder}")
-            folder.mkdir(parents=True, exist_ok=True)
-        
-        if not folder.is_dir():
-            raise NotADirectoryError(f"Path is not a directory: {folder}")
-        
-        if not os.access(folder, os.W_OK):
-            raise PermissionError(f"Folder is not writable: {folder}")
-        
-        logger.info("Folder is ready.")
-        return True
 
     def _is_valid_video_url(self, video_url: str):
         return isinstance(video_url, str) and ("youtube.com/watch?v=" in video_url or "youtu.be/" in video_url)
