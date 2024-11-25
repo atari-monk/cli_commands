@@ -4,17 +4,17 @@ from cli_logger.logger import setup_logger
 from cli_commands.config import LOGGER_CONFIG
 from keyval_storage.storage import KeyValueStorage
 from pytoolbox.file_system import ensure_folder_exists
+from keyval_storage.config_storage_interaction import ConfigStorageInteraction
 
 logger = setup_logger(__name__, LOGGER_CONFIG)
 
-DOWNLOAD_FOLDER_KEY = 'vid_to_mp3-output_folder'
-CLI_TOOL_PATH = 'C:\\cli_tool'
-STORAGE_FILE = 'storage.json'
+APP_NAME = 'cli_tool'
+DOWNLOAD_FOLDER_KEY = 'vid_to_mp3-save_folder'
 
-class VideoToMp3():
-        
+class VideoToMp3():      
     def __init__(self):
         self._output_folder: str = ''
+        self._configStorage = ConfigStorageInteraction(APP_NAME)
 
     def run(self, args: str):
         argsList = args.split()
@@ -31,22 +31,15 @@ class VideoToMp3():
             logger.error("Invalid video URL format. URL must be a valid YouTube link.")
             return
         
-        ensure_folder_exists(CLI_TOOL_PATH)
-        storage = KeyValueStorage(os.path.join(CLI_TOOL_PATH, STORAGE_FILE))
+        storage = self._configStorage.loadFromConfig()
+        self._output_folder = storage.get(DOWNLOAD_FOLDER_KEY)
 
         if not self._output_folder:
-            output_folder = input("Provide folder to store downloads> ").strip()
-            
-            try:
-                if ensure_folder_exists(output_folder):
-                    self._output_folder = output_folder
-            except Exception as e:
-                logger.error(f"Error: {e}")
-
+            output_folder = input("Provide folder to SAVE downloads> ").strip()
+            ensure_folder_exists(output_folder)
+            self._output_folder = output_folder
             storage.set(DOWNLOAD_FOLDER_KEY, self._output_folder)
-        else:
-            self._output_folder = storage.get(DOWNLOAD_FOLDER_KEY)
-
+        
         try:
             self._download_youtube_as_mp3(video_url)
 
