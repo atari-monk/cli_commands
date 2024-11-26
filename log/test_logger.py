@@ -6,7 +6,8 @@ from shared.constants import APP_NAME
 from keyval_storage.constants import APP_DATA_FOLDER_KEY
 
 def log_test_command(_):
-    dataStorage = ConfigAndKeyValueStorageDataModel(APP_NAME)
+    dataModel = ConfigAndKeyValueStorageDataModel(APP_NAME)
+    dataStorage = dataModel.getKeyValueStorage_LoadUsingConfig()
     appDataFolder = dataStorage.get(APP_DATA_FOLDER_KEY)
 
     log_dir = Path(appDataFolder).joinpath('logs')
@@ -26,6 +27,9 @@ def log_test_command(_):
 
     # Setup logger with the custom configuration
     logger = setup_logger(__name__, custom_config)
+
+    logger.info(f'__name__: {__name__}')
+    logger.info(f'custom_config: {custom_config}')
 
     # Log messages with various severity levels
     logger.debug("This is a debug message.")
