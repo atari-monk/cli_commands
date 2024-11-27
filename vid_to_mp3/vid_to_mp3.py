@@ -8,7 +8,7 @@ logger = setup_logger(__name__, LOGGER_CONFIG)
 class VidToMp3:
     
     def validate_and_download(self, video_url: str, output_folder: str):
-        logger.info("Running VidToMp3 with URL:", video_url)
+        logger.info("Running VidToMp3 with URL: %s", video_url)
 
         if not self._is_valid_vid_url(video_url):
             logger.exception("Invalid video URL format.")
