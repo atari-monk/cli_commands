@@ -1,6 +1,8 @@
+# argparse.py
+
 import argparse
 
-def argparse_command(args):
+def argparse(args):
     # Split the args string into a list
     args_list = args.split()
     
