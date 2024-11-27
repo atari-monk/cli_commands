@@ -104,7 +104,7 @@ Each log entry includes:
 #### **Log Storage**
 
 -   Log files are stored in a `logs` directory within the application's data folder.
--   File names are dynamically generated based on the module name to ensure clarity and separation.
+-   Constants are defined that ensure loging of multiple commands to same log file 'log.task.log' to cli_tool data folder. Console logger has diffrent name than consoleFile logger, for them both to be cached in setup_logger function.
 
 ---
 
