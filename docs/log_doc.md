@@ -106,6 +106,11 @@ Each log entry includes:
 -   Log files are stored in a `logs` directory within the application's data folder.
 -   Constants are defined that ensure loging of multiple commands to same log file 'log.task.log' to cli_tool data folder. Console logger has diffrent name than consoleFile logger, for them both to be cached in setup_logger function.
 
+#### **Changes**
+
+-   Use one log file for all task commands.
+-   Remove timestamp from data as log already has one.
+
 ---
 
 ### **Advantages of the Log Command Set**
