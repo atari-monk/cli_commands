@@ -8,7 +8,7 @@ from shared.constants import APP_NAME, DOWNLOAD_FOLDER_KEY
 
 logger = setup_logger(__name__, LOGGER_CONFIG)
 
-class VideoToMp3():      
+class VidToMp3():      
     def __init__(self):
         self._output_folder: str = ''
         self._dataStorage = ConfigAndKeyValueStorageDataModel(APP_NAME)

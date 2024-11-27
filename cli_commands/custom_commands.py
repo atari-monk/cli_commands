@@ -1,7 +1,7 @@
 # custom_commands.py
 
 from cli_commands.config import LOGGER_CONFIG
-from convert.video_to_mp3 import VideoToMp3
+from convert.vid_to_mp3 import VidToMp3
 from cli_logger.logger import setup_logger
 from example.argparse import argparse
 from log.log_test import logTest
@@ -12,7 +12,7 @@ logger = setup_logger(__name__, LOGGER_CONFIG)
 
 def load():
     def vidmp3(args):
-        converter = VideoToMp3()
+        converter = VidToMp3()
         converter.run(args)
 
     def ping(_):
