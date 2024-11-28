@@ -1,5 +1,6 @@
 # custom_commands.py
 
+from scenes.read_scenes_command import ReadScenesCommand
 from shared.config import LOGGER_CONFIG
 from cli_logger.logger import setup_logger
 from example.argparse import argparse
@@ -17,5 +18,6 @@ def load():
         "argparse": argparse,
         "logtest": logTest,
         "estimate": estimateTask,
-        "report": reportTask
+        "report": reportTask,
+        "read_scenes": ReadScenesCommand().run
     }
