@@ -1,6 +1,6 @@
 # report_task.py
 
-from log.constants import CONSOLE_LOG, LOG_TASK_NAME
+from log.constants import CONSOLE_LOG, LOG_REPORT_TASK, LOG_TASK_NAME
 from log.log_setup import getConsoleLoggerConfig
 from log.log_setup import getConsoleFileLoggerConfig
 from cli_logger.logger import setup_logger
@@ -9,8 +9,8 @@ def reportTask(_):
     console_config = getConsoleLoggerConfig()
     console_file_config = getConsoleFileLoggerConfig(LOG_TASK_NAME)
 
-    consoleLogger = setup_logger(f'{LOG_TASK_NAME}_{CONSOLE_LOG}', console_config)
-    consoleFileLogger = setup_logger(LOG_TASK_NAME, console_file_config)
+    consoleLogger = setup_logger(f'{LOG_REPORT_TASK}_{CONSOLE_LOG}', console_config)
+    consoleFileLogger = setup_logger(LOG_REPORT_TASK, console_file_config)
 
     project = input("State project: ")
     task = input("State task: ")
