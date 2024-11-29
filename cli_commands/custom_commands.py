@@ -1,6 +1,7 @@
 # custom_commands.py
 
 from job_search.job_search_command import JobSearchCommand
+from log_chat.chat_collector_command import ChatCollectorCommand
 from scenes.read_scenes_command import ReadScenesCommand
 from shared.config import LOGGER_CONFIG
 from cli_logger.logger import setup_logger
@@ -22,4 +23,5 @@ def load():
         "report": reportTask,
         "read_scenes": ReadScenesCommand().run,
         "job_search": JobSearchCommand().run,
+        "chat_file": ChatCollectorCommand().run
     }
