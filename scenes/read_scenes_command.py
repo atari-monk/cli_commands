@@ -1,3 +1,5 @@
+# read_scenes_command.py
+
 from scenes.model import Scene, SceneCRUD
 from shared.cli_command import CLICommand
 from shared.constants import APP_NAME
