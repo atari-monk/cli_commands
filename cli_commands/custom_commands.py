@@ -6,9 +6,9 @@ from scenes.read_scenes_command import ReadScenesCommand
 from shared.config import LOGGER_CONFIG
 from cli_logger.logger import setup_logger
 from example.argparse import argparse
-from log.log_test import logTest
-from log.estimate_task import estimateTask
-from log.report_task import reportTask
+from log_task.log_test import logTest
+from log_task.estimate_task import estimateTask
+from log_task.report_task import reportTask
 from vid_to_mp3.vid_to_mp3_command import VidToMp3Command
 
 logger = setup_logger(__name__, LOGGER_CONFIG)

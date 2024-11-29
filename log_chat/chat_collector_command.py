@@ -3,12 +3,12 @@
 
 import os
 import pyperclip
-from log.log_setup import getConsoleFileLoggerConfig, getConsoleLoggerConfig
+from log_task.log_setup import getConsoleFileLoggerConfig, getConsoleLoggerConfig
 from shared.cli_command import CLICommand
 from cli_logger.logger import setup_logger
 import os
 import pyperclip
-from log.log_setup import getConsoleFileLoggerConfig, getConsoleLoggerConfig
+from log_task.log_setup import getConsoleFileLoggerConfig, getConsoleLoggerConfig
 from shared.cli_command import CLICommand
 from cli_logger.logger import setup_logger
 

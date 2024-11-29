@@ -1,8 +1,8 @@
 # report_task.py
 
-from log.constants import CONSOLE_LOG, LOG_REPORT_TASK, LOG_TASK_NAME
-from log.log_setup import getConsoleLoggerConfig
-from log.log_setup import getConsoleFileLoggerConfig
+from log_task.constants import CONSOLE_LOG, LOG_REPORT_TASK, LOG_TASK_NAME
+from log_task.log_setup import getConsoleLoggerConfig
+from log_task.log_setup import getConsoleFileLoggerConfig
 from cli_logger.logger import setup_logger
 
 def reportTask(_):
