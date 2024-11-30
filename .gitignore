@@ -1,4 +1,5 @@
 build
-cli_tool_commands.egg-info
+atari_monk_cli_tool_commands.egg-info
 logs
 __pycache__
+dist
