@@ -7,6 +7,7 @@
 -   [Argparse in Loop](argparse_in_loop.md)
 -   [Scenes model](scenes.md)
 -   [Job search](job_search.md)
+-   [Commands Planing](commands_planing.md)
 
 ## Note
 
