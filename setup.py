@@ -2,11 +2,12 @@ from setuptools import setup, find_packages
 
 setup(
     name="atari-monk-cli-tool-commands",
-    version="0.1.0",
+    version="0.1.2",
     packages=find_packages(),
     entry_points={
         "cli_tool.commands": [
             "custom_commands = cli_commands.custom_commands:load",
+            "storage_commands = cli_commands.storage_commands:load",
         ],
     },
     install_requires=["yt-dlp>=2023.3.1","pyperclip", "atari-monk-keyval-storage", "atari-monk-pytoolbox", "atari-monk-cli-logger", ""],
