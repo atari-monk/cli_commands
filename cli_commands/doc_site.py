@@ -1,5 +1,6 @@
 # storage_commands.py
 
+from doc_site.index import IndexCommand
 from doc_site.validate import ValidateCommand
 from shared.command import Command
 from shared.config import LOGGER_CONFIG
@@ -9,5 +10,6 @@ logger = setup_logger(__name__, LOGGER_CONFIG)
 
 def load():
     return {
-        Command.doc_site_validate.name: ValidateCommand().run
+        Command.doc_site_validate.cmd_name: ValidateCommand().run,
+        Command.doc_site_index.cmd_name: IndexCommand().run
     }
