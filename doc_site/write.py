@@ -35,7 +35,7 @@ class WriteCommand:
             description=Command.doc_site_write.desc
         )
 
-        self.cli_command.parser.add_argument('--file', type=str, help="Path to the markdown file to save input.")
+        self.cli_command.parser.add_argument('--name', type=str, help="File name to save input.")
 
         self.cli_command.set_execution_callback(self._execute_command)
 
@@ -49,21 +49,21 @@ class WriteCommand:
         self.console_logger.info(f"Category: {category}")    
 
         markdown_data = []
-        file_path = parsed_args.file or input("Enter the markdown file path: ").strip()
+        file_path = os.path.join(self.data_folder, category, parsed_args)
 
         if not os.path.exists(file_path):
-            print(f"File {file_path} does not exist. Creating a new file.")
+            print(f"Creating a new file {file_path}.")
             open(file_path, 'w').close()
 
         print("Starting to collect markdown from clipboard.")
         print("Step 1: Copy a part of your markdown content.")
         print("Step 2: Press Enter to store that content.")
-        print("Step 3: Type '--end' to finish when you're done.")
+        print("Step 3: Type 'e' to finish when you're done.")
 
         while True:
-            user_input = input("\nCopy a part of your markdown content and press Enter to store it (or type '--end' to stop): ").strip()
+            user_input = input("\nCopy a part of your markdown content and press Enter to store it (or type 'e' to stop): ").strip()
 
-            if user_input.lower() == '--end':
+            if user_input.lower() == 'e':
                 break
 
             clipboard_content = pyperclip.paste().strip()

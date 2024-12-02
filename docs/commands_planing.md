@@ -25,6 +25,6 @@ Creates index.md pages in folders and main one.
 
 ### write
 
-Write md with content.
-Select category, name.
+Write md with content.  
+Select category, name.  
 Write file. Invoke Index command.
