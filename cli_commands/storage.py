@@ -1,14 +1,11 @@
-# storage_commands.py
+# storage.py
 
-from shared.config import LOGGER_CONFIG
-from cli_logger.logger import setup_logger
+from shared.command import Command
 from storage.read import StorageReadCommand
 from storage.set import StorageSetCommand
 
-logger = setup_logger(__name__, LOGGER_CONFIG)
-
 def load():
     return {
-        "storage_read": StorageReadCommand().run,
-        "storage_set": StorageSetCommand().run
+        Command.storage_read.cmd_name: StorageReadCommand().run,
+        Command.storage_set.cmd_name: StorageSetCommand().run
     }

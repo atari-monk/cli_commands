@@ -6,9 +6,12 @@ setup(
     packages=find_packages(),
     entry_points={
         "cli_tool.commands": [
-            "storage = cli_commands.storage:load",
-            "doc_site = cli_commands.doc_site:load",
             "custom = cli_commands.custom:load",
+            "doc_site = cli_commands.doc_site:load",
+            "scene = cli_commands.scene:load",
+            "storage = cli_commands.storage:load",
+            "task = cli_commands.task:load",
+            "test = cli_commands.test:load",
         ],
     },
     install_requires=["yt-dlp>=2023.3.1","pyperclip", "atari-monk-keyval-storage", "atari-monk-pytoolbox", "atari-monk-cli-logger", ""],
