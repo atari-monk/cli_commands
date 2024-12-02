@@ -33,7 +33,6 @@ class IndexCommand:
             self.create_category_indexes(data)
 
     def create_global_index(self, base_path):
-        """Create or update the global index.md file listing all categories."""
         global_index_path = os.path.join(base_path, 'index.md')
 
         with open(global_index_path, 'w') as global_index:
@@ -47,7 +46,6 @@ class IndexCommand:
         print(f"Global index created at {global_index_path}")
 
     def create_category_indexes(self, base_path):
-        """Create or update index.md in each category folder."""
         for category in os.listdir(base_path):
             category_path = os.path.join(base_path, category)
             if os.path.isdir(category_path) and category not in self.ignored_folders:
@@ -55,7 +53,6 @@ class IndexCommand:
                 self.create_category_index(category_path, index_path)
 
     def create_category_index(self, category_path, index_path):
-        """Create or update an index.md file in a category folder."""
         with open(index_path, 'w') as category_index:
             category_name = os.path.basename(category_path)
             category_index.write(f'# {category_name}\n\n')

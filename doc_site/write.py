@@ -1,8 +1,9 @@
-# chat_collector_command.py
-# ChatCollectorCommand
+# write.py
 
 import os
 import pyperclip
+from doc_site.cli_tool import CLITool
+from doc_site.path_tool import PathTool
 from log_task.log_setup import getConsoleFileLoggerConfig, getConsoleLoggerConfig
 from shared.cli_command import CLICommand
 from cli_logger.logger import setup_logger
@@ -11,37 +12,45 @@ import pyperclip
 from log_task.log_setup import getConsoleFileLoggerConfig, getConsoleLoggerConfig
 from shared.cli_command import CLICommand
 from cli_logger.logger import setup_logger
+from shared.command import Command
+from keyval_storage.config_and_key_value_storage_data_model import ConfigAndKeyValueStorageDataModel
+from shared.constants import APP_NAME
 
-class ChatCollectorCommand:
+class WriteCommand:
     def __init__(self):
-        # Logger setup
-        console_config = getConsoleLoggerConfig()
-        console_file_config = getConsoleFileLoggerConfig("clipboard_markdown_collector")
-        self.console_logger = setup_logger("clipboard_markdown_collector_console", console_config)
-        self.file_logger = setup_logger("clipboard_markdown_collector_file", console_file_config)
+        data_model = ConfigAndKeyValueStorageDataModel(APP_NAME)
+        data_storage = data_model.getKeyValueStorage_LoadUsingConfig()
+        self.data_folder = data_storage.get('doc_site_data_folder')
 
-        # CLICommand setup
+        name = Command.doc_site_write.cmd_name
+
+        console_config = getConsoleLoggerConfig()
+        self.console_logger = setup_logger(f"{name}_console", console_config)
+
+        console_file_config = getConsoleFileLoggerConfig(name)
+        self.file_logger = setup_logger(f"{name}_file", console_file_config)
+
         self.cli_command = CLICommand(
-            prog="clipboardmdcollect",
-            description="Collect markdown content from clipboard and append to a markdown file."
+            prog=name,
+            description=Command.doc_site_write.desc
         )
 
-        # Adding arguments
         self.cli_command.parser.add_argument('--file', type=str, help="Path to the markdown file to save input.")
 
-        # Setting the execution callback
         self.cli_command.set_execution_callback(self._execute_command)
 
     def run(self, input_args: str):
-        """Parse and execute the command."""
         self.cli_command.parse_and_execute(input_args)
 
     def _execute_command(self, parsed_args):
-        """Collect clipboard markdown input and append to a file."""
+        self.console_logger.info(f"Data folder: {self.data_folder}")
+
+        category = CLITool.generate_menu_and_select(PathTool.list_first_level_folders(self.data_folder))
+        self.console_logger.info(f"Category: {category}")    
+
         markdown_data = []
         file_path = parsed_args.file or input("Enter the markdown file path: ").strip()
 
-        # Ensure the file exists
         if not os.path.exists(file_path):
             print(f"File {file_path} does not exist. Creating a new file.")
             open(file_path, 'w').close()
@@ -52,14 +61,11 @@ class ChatCollectorCommand:
         print("Step 3: Type '--end' to finish when you're done.")
 
         while True:
-            # Prompt user to copy content
             user_input = input("\nCopy a part of your markdown content and press Enter to store it (or type '--end' to stop): ").strip()
 
-            # Check if the user typed '--end' to break the loop
             if user_input.lower() == '--end':
                 break
 
-            # Get clipboard content
             clipboard_content = pyperclip.paste().strip()
 
             if clipboard_content:
@@ -68,11 +74,9 @@ class ChatCollectorCommand:
             else:
                 print("No clipboard content found. Please copy some markdown text to clipboard.")
 
-        # Write the collected markdown to the file
         with open(file_path, 'a') as f:
             f.write("\n\n".join(markdown_data) + "\n")
 
-        # Log to console and file
         self.console_logger.info(f"Collected markdown data: {markdown_data}")
         self.file_logger.info(f"Collected markdown data appended to {file_path}")
 

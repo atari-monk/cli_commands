@@ -1,7 +1,7 @@
 # custom_commands.py
 
 from job_search.job_search_command import JobSearchCommand
-from log_chat.chat_collector_command import ChatCollectorCommand
+from doc_site.write import WriteCommand
 from log_vid.video_data_command import VideoDataCommand
 from scenes.read_scenes_command import ReadScenesCommand
 from scenes.write_scene_command import WriteSceneCommand
@@ -24,7 +24,6 @@ def load():
         "estimate_task": estimateTask,
         "report_task": reportTask,
         "doc_job": JobSearchCommand().run,
-        "doc_chat": ChatCollectorCommand().run,
         "read_scene": ReadScenesCommand().run,
         "doc_scene": WriteSceneCommand().run,
         "doc_vid": VideoDataCommand().run
