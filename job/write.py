@@ -3,7 +3,7 @@ from shared.log_setup import getConsoleFileLoggerConfig, getConsoleLoggerConfig
 from shared.cli_command import CLICommand
 from cli_logger.logger import setup_logger
 
-class JobCommand:
+class WriteCommand:
     def __init__(self):
         self.cliLogger = setup_logger("job_search_console", getConsoleLoggerConfig())
         self.cliFileLogger = setup_logger("job_search_file", getConsoleFileLoggerConfig("job_search"))
