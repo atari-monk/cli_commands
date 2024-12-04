@@ -12,16 +12,17 @@ class Command(Enum):
     task_report  = ("task_report", "Report task real time")
 
     scene_read = ("scene_read", "Read scenes")
-    scene_write  = ("scene_write ", "Write scene")
+    scene_write  = ("scene_write", "Write scene")
 
-    test_ping = ("test_ping ", "Loggs ping to console")
+    test_ping = ("test_ping", "Loggs ping to console")
     test_argparse = ("test_argparse", "Test of argparse")
     test_log  = ("test_log", "Test of log setup")
 
     vidmp3 = ("vidmp3", "Video to mp3")
-    job_write = ("job_write", "Write job offer record")    
     vid_write = ("vid_write", "Write record on video")
 
+    job_write = ("job_write", "Write job offer record")
+    
     def __init__(self, cmd_name, desc):
         self.cmd_name = cmd_name
         self.desc = desc
