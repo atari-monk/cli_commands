@@ -1,6 +1,6 @@
-from typing import Any
 from shared.cli_command import CLICommand
-from shared.constants import APP_NAME, DOWNLOAD_FOLDER_KEY
+from shared.constants import APP_NAME
+from shared.storage_key import StorageKey
 from vid_to_mp3.vid_to_mp3 import VidToMp3
 from keyval_storage.config_and_key_value_storage_data_model import ConfigAndKeyValueStorageDataModel
 from pytoolbox.file_system import ensure_folder_exists
@@ -29,11 +29,11 @@ class VidToMp3Command:
     def _execute_command(self, parsed_args):
         video_url = parsed_args.video_url
         data_storage = self._data_storage.getKeyValueStorage_LoadUsingConfig()
-        output_folder = data_storage.get(DOWNLOAD_FOLDER_KEY)
+        output_folder = data_storage.get(StorageKey.VID_TO_MP3_SAVE_FOLDER)
 
         if not output_folder:
             output_folder = input("Provide folder to SAVE downloads> ").strip()
             ensure_folder_exists(output_folder)
-            data_storage.set(DOWNLOAD_FOLDER_KEY, output_folder)
+            data_storage.set(StorageKey.VID_TO_MP3_SAVE_FOLDER, output_folder)
 
         self.vid_to_mp3.validate_and_download(video_url, output_folder)

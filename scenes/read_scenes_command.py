@@ -6,9 +6,12 @@ from shared.constants import APP_NAME
 from keyval_storage.config_and_key_value_storage_data_model import ConfigAndKeyValueStorageDataModel
 import json
 
+from shared.storage_key import StorageKey
+
 class ReadScenesCommand:
     def __init__(self):
-        self._data_storage = ConfigAndKeyValueStorageDataModel(APP_NAME)
+        self.file_path = ConfigAndKeyValueStorageDataModel(APP_NAME).getKeyValueStorage_LoadUsingConfig().get(str(StorageKey.SCENE_FILE_PATH))
+
         self.scene_crud = SceneCRUD()
 
         self.cli_command = CLICommand(
@@ -16,23 +19,14 @@ class ReadScenesCommand:
             description="Read scenes from a JSON file and log their content."
         )
 
-        self.cli_command.parser.add_argument(
-            'file_path',
-            type=str,
-            help="The path to the JSON file containing the scenes."
-        )
-
         self.cli_command.set_execution_callback(self._execute_command)
 
     def run(self, input_args: str):
         self.cli_command.parse_and_execute(input_args)
 
-    def _execute_command(self, parsed_args):
-        file_path = parsed_args.file_path
-        #ensure_file_exists(file_path)
-
+    def _execute_command(self, _):
         try:
-            with open(file_path, 'r') as file:
+            with open(self.file_path, 'r') as file:
                 scenes_data = json.load(file)
                 self.scene_crud.scenes = [Scene(**scene) for scene in scenes_data]
 
