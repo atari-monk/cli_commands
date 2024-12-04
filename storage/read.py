@@ -1,14 +1,15 @@
 from shared.cli_command import CLICommand
+from shared.command import Command
 from shared.constants import APP_NAME
 from keyval_storage.config_and_key_value_storage_data_model import ConfigAndKeyValueStorageDataModel
 
-class StorageReadCommand:
+class ReadCommand:
     def __init__(self):
-        self._data_storage = ConfigAndKeyValueStorageDataModel(APP_NAME)
+        self._data_storage = ConfigAndKeyValueStorageDataModel(APP_NAME).getKeyValueStorage_LoadUsingConfig()
 
         self.cli_command = CLICommand(
-            prog="storage_read",
-            description="Print content of storage file"
+            prog=Command.storage_read.cmd_name,
+            description=Command.storage_read.desc
         )
 
         self.cli_command.set_execution_callback(self._execute_command)
@@ -16,10 +17,6 @@ class StorageReadCommand:
     def run(self, input_args: str):
         self.cli_command.parse_and_execute(input_args)
 
-    def _execute_command(self, parsed_args):
-        data_storage = self._data_storage.getKeyValueStorage_LoadUsingConfig()
-        
-        data = data_storage._read_data()
-
-        for key, value in data.items():
+    def _execute_command(self, _):
+        for key, value in self.data_storage._read_data().items():
             print(f"{key}: {value}")

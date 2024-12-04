@@ -1,14 +1,15 @@
 from shared.cli_command import CLICommand
+from shared.command import Command
 from shared.constants import APP_NAME
 from keyval_storage.config_and_key_value_storage_data_model import ConfigAndKeyValueStorageDataModel
 
-class StorageSetCommand:
+class SetCommand:
     def __init__(self):
-        self._data_storage = ConfigAndKeyValueStorageDataModel(APP_NAME)
+        self._data_storage = ConfigAndKeyValueStorageDataModel(APP_NAME).getKeyValueStorage_LoadUsingConfig()
 
         self.cli_command = CLICommand(
-            prog="storage_set",
-            description="Set a value in the storage file"
+            prog=Command.storage_set.cmd_name,
+            description=Command.storage_set.desc
         )
 
         self.cli_command.add_argument('--key', type=str, help="Key for the value to be set", required=True)
@@ -23,8 +24,6 @@ class StorageSetCommand:
         key = parsed_args.key
         value = parsed_args.value
 
-        data_storage = self._data_storage.getKeyValueStorage_LoadUsingConfig()
-        
-        data_storage.set(key, value)
+        self.data_storage.set(key, value)
         
         print(f"Set {key} to {value}")
