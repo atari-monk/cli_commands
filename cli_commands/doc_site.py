@@ -1,5 +1,3 @@
-# doc_site.py
-
 from doc_site.index import IndexCommand
 from doc_site.validate import ValidateCommand
 from doc_site.write import WriteCommand

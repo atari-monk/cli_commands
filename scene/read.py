@@ -1,11 +1,11 @@
 from scene.scene_crud import SceneCRUD
 from scene.model import Scene
 from shared.cli_command import CLICommand
+from shared.command import Command
+from shared.storage_key import StorageKey
 from shared.constants import APP_NAME
 from keyval_storage.config_and_key_value_storage_data_model import ConfigAndKeyValueStorageDataModel
 import json
-
-from shared.storage_key import StorageKey
 
 class ReadCommand:
     def __init__(self):
@@ -13,8 +13,8 @@ class ReadCommand:
         self.scene_crud = SceneCRUD()
 
         self.cli_command = CLICommand(
-            prog="read_scenes",
-            description="Read scenes from a JSON file and log their content."
+            prog=Command.scene_read.cmd_name,
+            description=Command.scene_read.desc
         )
 
         self.cli_command.set_execution_callback(self._execute_command)

@@ -1,5 +1,3 @@
-# test.py
-
 from cli_logger.logger import setup_logger
 from shared.command import Command
 from shared.config import LOGGER_CONFIG

@@ -1,5 +1,3 @@
-# task.py
-
 from task.estimate import estimateTask
 from task.report import reportTask
 from shared.command import Command

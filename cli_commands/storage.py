@@ -1,5 +1,3 @@
-# storage.py
-
 from shared.command import Command
 from storage.read import ReadCommand
 from storage.set import SetCommand

@@ -1,5 +1,3 @@
-# scene.py
-
 from scene.read import ReadCommand
 from scene.write import WriteCommand
 from shared.command import Command
