@@ -8,7 +8,7 @@ class Command(Enum):
     doc_site_index = ("doc_site_index", "Generate indexes for doc_site")
     doc_site_write = ("doc_site_write", "Write md file for doc_site")
     
-    task_estimate = ("task_estimate ", "Estimate the duration of tasks and automatically timestamp the start of each task when it begins")
+    task_estimate = ("task_estimate", "Estimate the duration of tasks and automatically timestamp the start of each task when it begins")
     task_report  = ("task_report", "Report task real time")
 
     scene_read = ("scene_read", "Read scenes")
