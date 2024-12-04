@@ -7,7 +7,7 @@ from cli_logger.logger import setup_logger
 from shared.log_setup import getConsoleFileLoggerConfig, getConsoleLoggerConfig
 from scene.model import Scene, Entity
 
-class WriteSceneCommand:
+class WriteCommand:
     def __init__(self):
         # Logger setup
         console_config = getConsoleLoggerConfig()

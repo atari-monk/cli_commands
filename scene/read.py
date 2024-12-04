@@ -1,6 +1,5 @@
-# read_scenes_command.py
-
-from scene.model import Scene, SceneCRUD
+from scene.scene_crud import SceneCRUD
+from scene.model import Scene
 from shared.cli_command import CLICommand
 from shared.constants import APP_NAME
 from keyval_storage.config_and_key_value_storage_data_model import ConfigAndKeyValueStorageDataModel
@@ -8,10 +7,9 @@ import json
 
 from shared.storage_key import StorageKey
 
-class ReadScenesCommand:
+class ReadCommand:
     def __init__(self):
-        self.file_path = ConfigAndKeyValueStorageDataModel(APP_NAME).getKeyValueStorage_LoadUsingConfig().get(str(StorageKey.SCENE_FILE_PATH))
-
+        self.file_path = ConfigAndKeyValueStorageDataModel(APP_NAME).getKeyValueStorage_LoadUsingConfig().get(StorageKey.SCENE_FILE_PATH.value)
         self.scene_crud = SceneCRUD()
 
         self.cli_command = CLICommand(
