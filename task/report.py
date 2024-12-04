@@ -1,16 +1,13 @@
 # report_task.py
 
-from log_task.constants import CONSOLE_LOG, LOG_REPORT_TASK, LOG_TASK_NAME
-from log_task.log_setup import getConsoleLoggerConfig
-from log_task.log_setup import getConsoleFileLoggerConfig
+from task.constant import CONSOLE_LOG, LOG_REPORT_TASK, LOG_TASK_NAME
+from shared.log_setup import getConsoleLoggerConfig
+from shared.log_setup import getConsoleFileLoggerConfig
 from cli_logger.logger import setup_logger
 
 def reportTask(_):
-    console_config = getConsoleLoggerConfig()
-    console_file_config = getConsoleFileLoggerConfig(LOG_TASK_NAME)
-
-    consoleLogger = setup_logger(f'{LOG_REPORT_TASK}_{CONSOLE_LOG}', console_config)
-    consoleFileLogger = setup_logger(LOG_REPORT_TASK, console_file_config)
+    cliLogger = setup_logger(f'{LOG_REPORT_TASK}_{CONSOLE_LOG}', getConsoleLoggerConfig())
+    cliAndFileLogger = setup_logger(LOG_REPORT_TASK, getConsoleFileLoggerConfig(LOG_TASK_NAME))
 
     project = input("State project: ")
     task = input("State task: ")
@@ -30,5 +27,5 @@ def reportTask(_):
         "real_time": real_time
     }
     
-    consoleFileLogger.info(log_data)
-    consoleLogger.info("\nYour input has been logged. Thank you!")
+    cliAndFileLogger.info(log_data)
+    cliLogger.info("\nYour input has been logged. Thank you!")

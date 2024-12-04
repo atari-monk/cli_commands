@@ -1,7 +1,7 @@
 # task.py
 
-from log_task.estimate_task import estimateTask
-from log_task.report_task import reportTask
+from task.estimate import estimateTask
+from task.report import reportTask
 from shared.command import Command
 
 def load():

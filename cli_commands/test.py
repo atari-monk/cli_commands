@@ -4,7 +4,7 @@ from cli_logger.logger import setup_logger
 from shared.command import Command
 from shared.config import LOGGER_CONFIG
 from example.argparse import argparse
-from log_task.log_test import logTest
+from shared.log_test import logTest
 
 logger = setup_logger(__name__, LOGGER_CONFIG)
 

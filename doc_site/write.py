@@ -2,7 +2,7 @@ import os
 import pyperclip
 from doc_site.cli_tool import CLITool
 from doc_site.path_tool import PathTool
-from log_task.log_setup import getConsoleFileLoggerConfig, getConsoleLoggerConfig
+from shared.log_setup import getConsoleFileLoggerConfig, getConsoleLoggerConfig
 from shared.cli_command import CLICommand
 from cli_logger.logger import setup_logger
 from shared.command import Command

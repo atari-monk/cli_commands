@@ -1,7 +1,7 @@
 # log_test.py
 
 from cli_logger.logger import setup_logger
-from log_task.log_setup import getConsoleFileLoggerConfig
+from shared.log_setup import getConsoleFileLoggerConfig
 
 def logTest(_):
     custom_config = getConsoleFileLoggerConfig(__name__)

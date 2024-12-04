@@ -1,7 +1,7 @@
 # video_data_command.py
 
 import json
-from log_task.log_setup import getConsoleFileLoggerConfig, getConsoleLoggerConfig
+from shared.log_setup import getConsoleFileLoggerConfig, getConsoleLoggerConfig
 from shared.cli_command import CLICommand
 from cli_logger.logger import setup_logger
 

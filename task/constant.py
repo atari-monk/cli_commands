@@ -1,4 +1,4 @@
-# constants.py
+# constant.py
 
 CONSOLE_LOG = 'console'
 LOG_TASK_NAME = 'log_task'
