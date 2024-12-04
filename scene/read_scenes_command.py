@@ -1,6 +1,6 @@
 # read_scenes_command.py
 
-from scenes.model import Scene, SceneCRUD
+from scene.model import Scene, SceneCRUD
 from shared.cli_command import CLICommand
 from shared.constants import APP_NAME
 from keyval_storage.config_and_key_value_storage_data_model import ConfigAndKeyValueStorageDataModel

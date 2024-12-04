@@ -5,7 +5,7 @@ import os
 from shared.cli_command import CLICommand
 from cli_logger.logger import setup_logger
 from shared.log_setup import getConsoleFileLoggerConfig, getConsoleLoggerConfig
-from scenes.model import Scene, Entity
+from scene.model import Scene, Entity
 
 class WriteSceneCommand:
     def __init__(self):

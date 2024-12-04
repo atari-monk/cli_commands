@@ -1,7 +1,7 @@
 # scene.py
 
-from scenes.read_scenes_command import ReadScenesCommand
-from scenes.write_scene_command import WriteSceneCommand
+from scene.read_scenes_command import ReadScenesCommand
+from scene.write_scene_command import WriteSceneCommand
 from shared.command import Command
 
 def load():
