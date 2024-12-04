@@ -4,12 +4,14 @@ from shared.command import Command
 from shared.constants import APP_NAME
 from keyval_storage.config_and_key_value_storage_data_model import ConfigAndKeyValueStorageDataModel
 
+from shared.storage_key import StorageKey
+
 class ValidateCommand:
     def __init__(self):
-        self._data_storage = ConfigAndKeyValueStorageDataModel(APP_NAME)
+        self._data_storage = ConfigAndKeyValueStorageDataModel(APP_NAME).getKeyValueStorage_LoadUsingConfig()
 
         self.cli_command = CLICommand(
-            prog=Command.doc_site_validate.name,
+            prog=Command.doc_site_validate.cmd_name,
             description=Command.doc_site_validate.desc
         )
 
@@ -21,13 +23,11 @@ class ValidateCommand:
     def run(self, input_args: str):
         self.cli_command.parse_and_execute(input_args)
 
-    def _execute_command(self, parsed_args):
-        data_storage = self._data_storage.getKeyValueStorage_LoadUsingConfig()
-        
-        data = data_storage.get('doc_site_data_folder')
+    def _execute_command(self, _):
+        data = self._data_storage.get(StorageKey.DOC_SITE_DATA_FOLDER.value)
 
         if not data: 
-            print(f"Error: No record for key 'doc_site_data_folder'.")
+            print(f"Error: No record for key {StorageKey.DOC_SITE_DATA_FOLDER.value}.")
         else:
             self.validate_doc_site_structure(data)
 

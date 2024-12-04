@@ -1,14 +1,12 @@
-# argparse.py
-
 import argparse
+from shared.command import Command
 
 def argparse(args):
     args_list = args.split()
     
     parser = argparse.ArgumentParser(
-        prog="argparse",
-        description="Demonstrate argparse in a CLI tool",
-        add_help=False
+        prog=Command.test_argparse.cmd_name,
+        description=Command.test_argparse.desc
     )
     
     parser.add_argument('-h', '--help', action='store_true', help='Show this help message and exit')

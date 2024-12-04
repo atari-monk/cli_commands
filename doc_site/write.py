@@ -1,5 +1,7 @@
 import os
 import pyperclip
+import tempfile
+import subprocess
 from doc_site.cli_tool import CLITool
 from doc_site.path_tool import PathTool
 from shared.log_setup import getConsoleFileLoggerConfig, getConsoleLoggerConfig
@@ -8,22 +10,16 @@ from cli_logger.logger import setup_logger
 from shared.command import Command
 from keyval_storage.config_and_key_value_storage_data_model import ConfigAndKeyValueStorageDataModel
 from shared.constants import APP_NAME
-import tempfile
-import subprocess
+from shared.storage_key import StorageKey
 
 class WriteCommand:
     def __init__(self):
-        data_model = ConfigAndKeyValueStorageDataModel(APP_NAME)
-        data_storage = data_model.getKeyValueStorage_LoadUsingConfig()
-        self.data_folder = data_storage.get('doc_site_data_folder')
+        data_storage = ConfigAndKeyValueStorageDataModel(APP_NAME).getKeyValueStorage_LoadUsingConfig()
+        self.data_folder = data_storage.get(StorageKey.DOC_SITE_DATA_FOLDER.value)
 
         name = Command.doc_site_write.cmd_name
-
-        console_config = getConsoleLoggerConfig()
-        self.console_logger = setup_logger(f"{name}_console", console_config)
-
-        console_file_config = getConsoleFileLoggerConfig(name)
-        self.file_logger = setup_logger(f"{name}_file", console_file_config)
+        self.cliLogger = setup_logger(f"{name}_console", getConsoleLoggerConfig())
+        self.cliFileLogger = setup_logger(f"{name}_file", getConsoleFileLoggerConfig(name))
 
         self.cli_command = CLICommand(
             prog=name,
@@ -35,11 +31,11 @@ class WriteCommand:
     def run(self, input_args: str):
         self.cli_command.parse_and_execute(input_args)
 
-    def _execute_command(self, parsed_args):
-        self.console_logger.info(f"Data folder: {self.data_folder}")
+    def _execute_command(self, _):
+        self.cliLogger.info(f"Data folder: {self.data_folder}")
 
         category = CLITool.generate_menu_and_select(PathTool.list_first_level_folders(self.data_folder))
-        self.console_logger.info(f"Category: {category}")    
+        self.cliLogger.info(f"Category: {category}")    
 
         name = input("Provide file name: ")
 
@@ -74,8 +70,8 @@ class WriteCommand:
         with open(file_path, 'a') as f:
             f.write("\n\n".join(markdown_data) + "\n")
 
-        self.console_logger.info(f"Collected markdown data: {markdown_data}")
-        self.file_logger.info(f"Collected markdown data appended to {file_path}")
+        self.cliLogger.info(f"Collected markdown data: {markdown_data}")
+        self.cliFileLogger.info(f"Collected markdown data appended to {file_path}")
 
         print(f"\nMarkdown has been successfully appended to {file_path}!")
 
