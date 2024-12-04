@@ -2,7 +2,7 @@ from shared.cli_command import CLICommand
 from shared.command import Command
 from shared.constants import APP_NAME
 from shared.storage_key import StorageKey
-from vid.vid_to_mp3 import VidToMp3
+from vid.vid_mp3_convert import VidToMp3
 from keyval_storage.config_and_key_value_storage_data_model import ConfigAndKeyValueStorageDataModel
 from pytoolbox.file_system import ensure_folder_exists
 

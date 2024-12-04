@@ -1,6 +1,6 @@
-from vid.link import VideoDataCommand
 from shared.command import Command
-from vid.vid_to_mp3_command import VidToMp3Command
+from vid.link import VideoDataCommand
+from vid.vid_mp3 import VidToMp3Command
 
 def load():
     return {
