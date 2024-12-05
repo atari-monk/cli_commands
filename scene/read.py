@@ -9,26 +9,26 @@ import json
 
 class ReadCommand:
     def __init__(self):
-        self.file_path = ConfigAndKeyValueStorageDataModel(APP_NAME).getKeyValueStorage_LoadUsingConfig().get(StorageKey.SCENE_FILE_PATH.value)
-        self.scene_crud = SceneCRUD()
+        self.__file_path = ConfigAndKeyValueStorageDataModel(APP_NAME).getKeyValueStorage_LoadUsingConfig().get(StorageKey.SCENE_FILE_PATH.value)
+        self.__scene_crud = SceneCRUD()
 
-        self.cli_command = CLICommand(
+        self.__cli_command = CLICommand(
             prog=Command.scene_read.cmd_name,
             description=Command.scene_read.desc
         )
 
-        self.cli_command.set_execution_callback(self._execute_command)
+        self.__cli_command.set_execution_callback(self._execute_command)
 
     def run(self, input_args: str):
-        self.cli_command.parse_and_execute(input_args)
+        self.__cli_command.parse_and_execute(input_args)
 
     def _execute_command(self, _):
         try:
-            with open(self.file_path, 'r') as file:
+            with open(self.__file_path, 'r') as file:
                 scenes_data = json.load(file)
-                self.scene_crud.scenes = [Scene(**scene) for scene in scenes_data]
+                self.__scene_crud.scenes = [Scene(**scene) for scene in scenes_data]
 
-            for scene in self.scene_crud.list_scenes():
+            for scene in self.__scene_crud.list_scenes():
                 print(f"Scene Name: {scene.name}")
                 print(f"Description: {scene.description}")
                 print(f"Path: {scene.path}")

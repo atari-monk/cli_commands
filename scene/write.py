@@ -3,10 +3,15 @@ import os
 from shared.cli_command import CLICommand
 from shared.command import Command
 from scene.model import Entity
+from shared.constants import APP_NAME
 from shared.logger_config import create_loggers
+from keyval_storage.config_and_key_value_storage_data_model import ConfigAndKeyValueStorageDataModel
+from shared.storage_key import StorageKey
 
 class WriteCommand:
     def __init__(self):
+        self.__file_path = ConfigAndKeyValueStorageDataModel(APP_NAME).getKeyValueStorage_LoadUsingConfig().get(StorageKey.SCENE_FILE_PATH.value)
+
         self.__cliLogger, self.__cliAndFileLogger = create_loggers("scenes", "scene_write")
         
         self.__cli_command = CLICommand(
@@ -28,7 +33,6 @@ class WriteCommand:
         name = parsed_args.name or input("Enter scene name: ").strip()
         path = parsed_args.path or input("Enter scene file path: ").strip()
         description = parsed_args.description or input("Enter scene description: ").strip()
-
         image = parsed_args.image or input("Enter optional image path (or leave blank): ").strip()
 
         new_scene_data = {
@@ -40,9 +44,9 @@ class WriteCommand:
         }
 
         scenes = []
-        if os.path.exists(path):
+        if os.path.exists(self.__file_path):
             try:
-                with open(path, 'r') as file:
+                with open(self.__file_path, 'r') as file:
                     scenes = json.load(file)
                     if not isinstance(scenes, list):
                         raise ValueError("The file does not contain a valid list of scenes.")
@@ -53,9 +57,9 @@ class WriteCommand:
         scenes.append(new_scene_data)
 
         try:
-            with open(path, 'w') as file:
+            with open(self.__file_path, 'w') as file:
                 json.dump(scenes, file, indent=2)
-            print(f"New scene '{name}' appended to {path}.")
+            print(f"New scene '{name}' appended to {self.__file_path}.")
         except Exception as e:
             print(f"Error saving updated scene data: {e}")
             return
@@ -74,7 +78,7 @@ class WriteCommand:
                 )
                 new_scene_data['entities'].append(entity.model_dump())
 
-                with open(path, 'w') as file:
+                with open(self.__file_path, 'w') as file:
                     json.dump(scenes, file, indent=2)
                 print(f"Entity '{entity_name}' added to scene '{name}' and file updated.")
             except Exception as e:
