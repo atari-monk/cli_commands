@@ -4,44 +4,40 @@ import tempfile
 import subprocess
 from doc_site.cli_tool import CLITool
 from doc_site.path_tool import PathTool
-from shared.log_setup import getConsoleFileLoggerConfig, getConsoleLoggerConfig
 from shared.cli_command import CLICommand
-from cli_logger.logger import setup_logger
 from shared.command import Command
 from keyval_storage.config_and_key_value_storage_data_model import ConfigAndKeyValueStorageDataModel
 from shared.constants import APP_NAME
+from shared.logger_config import create_loggers
 from shared.storage_key import StorageKey
 
 class WriteCommand:
     def __init__(self):
-        data_storage = ConfigAndKeyValueStorageDataModel(APP_NAME).getKeyValueStorage_LoadUsingConfig()
-        self.data_folder = data_storage.get(StorageKey.DOC_SITE_DATA_FOLDER.value)
+        self.__data_folder = ConfigAndKeyValueStorageDataModel(APP_NAME).getKeyValueStorage_LoadUsingConfig().get(StorageKey.DOC_SITE_DATA_FOLDER.value)
 
-        name = Command.doc_site_write.cmd_name
-        self.cliLogger = setup_logger(f"{name}_console", getConsoleLoggerConfig())
-        self.cliFileLogger = setup_logger(f"{name}_file", getConsoleFileLoggerConfig(name))
-
-        self.cli_command = CLICommand(
-            prog=name,
+        self.__cliLogger, self.__cliAndFileLogger = create_loggers(Command.doc_site_write.cmd_name)
+        
+        self.__cli_command = CLICommand(
+            prog=Command.doc_site_write.cmd_name,
             description=Command.doc_site_write.desc
         )
 
-        self.cli_command.set_execution_callback(self._execute_command)
+        self.__cli_command.set_execution_callback(self._execute_command)
 
     def run(self, input_args: str):
-        self.cli_command.parse_and_execute(input_args)
+        self.__cli_command.parse_and_execute(input_args)
 
     def _execute_command(self, _):
-        self.cliLogger.info(f"Data folder: {self.data_folder}")
+        self.__cliLogger.info(f"Data folder: {self.__data_folder}")
 
-        category = CLITool.generate_menu_and_select(PathTool.list_first_level_folders(self.data_folder))
-        self.cliLogger.info(f"Category: {category}")    
+        category = CLITool.generate_menu_and_select(PathTool.list_first_level_folders(self.__data_folder))
+        self.__cliLogger.info(f"Category: {category}")    
 
         name = input("Provide file name: ")
 
         markdown_data = []
-        print(f"data_folder: {self.data_folder}, category: {category}, name: {name}")
-        file_path = os.path.join(self.data_folder, category, f"{name}.md")
+        print(f"data_folder: {self.__data_folder}, category: {category}, name: {name}")
+        file_path = os.path.join(self.__data_folder, category, f"{name}.md")
 
         if not os.path.exists(file_path):
             print(f"Creating a new file {file_path}.")
@@ -70,8 +66,8 @@ class WriteCommand:
         with open(file_path, 'a') as f:
             f.write("\n\n".join(markdown_data) + "\n")
 
-        self.cliLogger.info(f"Collected markdown data: {markdown_data}")
-        self.cliFileLogger.info(f"Collected markdown data appended to {file_path}")
+        self.__cliLogger.info(f"Collected markdown data: {markdown_data}")
+        self.__cliAndFileLogger.info(f"Collected markdown data appended to {file_path}")
 
         print(f"\nMarkdown has been successfully appended to {file_path}!")
 

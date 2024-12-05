@@ -1,30 +1,28 @@
 import json
 import os
 from shared.cli_command import CLICommand
-from cli_logger.logger import setup_logger
 from shared.command import Command
-from shared.log_setup import getConsoleFileLoggerConfig, getConsoleLoggerConfig
 from scene.model import Entity
+from shared.logger_config import create_loggers
 
 class WriteCommand:
     def __init__(self):
-        self.cliLogger = setup_logger("write_scene_console", getConsoleLoggerConfig())
-        self.cliFileLogger = setup_logger("write_scene_file", getConsoleFileLoggerConfig("write_scene"))
-
-        self.cli_command = CLICommand(
+        self.__cliLogger, self.__cliAndFileLogger = create_loggers("scenes", "scene_write")
+        
+        self.__cli_command = CLICommand(
             prog=Command.scene_write.cmd_name,
             description=Command.scene_write.desc
         )
 
-        self.cli_command.parser.add_argument('--name', type=str, help="Scene name.")
-        self.cli_command.parser.add_argument('--path', type=str, help="Scene file path.")
-        self.cli_command.parser.add_argument('--description', type=str, help="Scene description.")
-        self.cli_command.parser.add_argument('--image', type=str, help="Optional image for the scene.")
+        self.__cli_command.parser.add_argument('--name', type=str, help="Scene name.")
+        self.__cli_command.parser.add_argument('--path', type=str, help="Scene file path.")
+        self.__cli_command.parser.add_argument('--description', type=str, help="Scene description.")
+        self.__cli_command.parser.add_argument('--image', type=str, help="Optional image for the scene.")
 
-        self.cli_command.set_execution_callback(self._execute_command)
+        self.__cli_command.set_execution_callback(self._execute_command)
 
     def run(self, input_args: str):
-        self.cli_command.parse_and_execute(input_args)
+        self.__cli_command.parse_and_execute(input_args)
 
     def _execute_command(self, parsed_args):
         name = parsed_args.name or input("Enter scene name: ").strip()
@@ -74,7 +72,7 @@ class WriteCommand:
                     components=[comp.strip() for comp in components if comp.strip()],
                     systems=[sys.strip() for sys in systems if sys.strip()]
                 )
-                new_scene_data['entities'].append(entity.dict())
+                new_scene_data['entities'].append(entity.model_dump())
 
                 with open(path, 'w') as file:
                     json.dump(scenes, file, indent=2)
@@ -87,7 +85,7 @@ class WriteCommand:
             if add_another != 'y':
                 break
 
-        self.cliLogger.info(f"Final scene data: {new_scene_data}")
-        self.cliFileLogger.info(json.dumps(new_scene_data, indent=2))
+        self.__cliLogger.info(f"Final scene data: {new_scene_data}")
+        self.__cliAndFileLogger.info(json.dumps(new_scene_data, indent=2))
 
         print("\nScene data has been logged and appended successfully!")

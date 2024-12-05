@@ -7,26 +7,26 @@ from shared.logger_config import create_loggers
 
 class VideoDataCommand:
     def __init__(self):
-        self.cliLogger, self.cliAndFileLogger = create_loggers("video_data")
+        self.__cliLogger, self.__cliAndFileLogger = create_loggers(Command.vid_write.cmd_name)
         
-        self.cli_command = CLICommand(
+        self.__cli_command = CLICommand(
             prog=Command.vid_write.cmd_name,
             description=Command.vid_write.desc
         )
 
-        self.cli_command.parser.add_argument('--title', type=str, help="Video title.")
-        self.cli_command.parser.add_argument('--link', type=str, help="Video link.")
-        self.cli_command.parser.add_argument('--desc', type=str, help="Video description.")
-        self.cli_command.parser.add_argument('--grade', type=int, choices=range(1, 11), help="Video grade (1-10).")
-        self.cli_command.parser.add_argument('--tags', type=str, help="Comma-separated tags for the video.")
-        self.cli_command.parser.add_argument('--upload_date', type=str, help="Video upload date (YYYY-MM-DD).")
-        self.cli_command.parser.add_argument('--duration', type=str, help="Video duration in minutes.")
-        self.cli_command.parser.add_argument('--comments', type=str, help="Any additional comments.")
+        self.__cli_command.parser.add_argument('--title', type=str, help="Video title.")
+        self.__cli_command.parser.add_argument('--link', type=str, help="Video link.")
+        self.__cli_command.parser.add_argument('--desc', type=str, help="Video description.")
+        self.__cli_command.parser.add_argument('--grade', type=int, choices=range(1, 11), help="Video grade (1-10).")
+        self.__cli_command.parser.add_argument('--tags', type=str, help="Comma-separated tags for the video.")
+        self.__cli_command.parser.add_argument('--upload_date', type=str, help="Video upload date (YYYY-MM-DD).")
+        self.__cli_command.parser.add_argument('--duration', type=str, help="Video duration in minutes.")
+        self.__cli_command.parser.add_argument('--comments', type=str, help="Any additional comments.")
 
-        self.cli_command.set_execution_callback(self._execute_command)
+        self.__cli_command.set_execution_callback(self._execute_command)
 
     def run(self, input_args: str):
-        self.cli_command.parse_and_execute(input_args)
+        self.__cli_command.parse_and_execute(input_args)
 
     def _execute_command(self, parsed_args):
         try:
@@ -53,8 +53,8 @@ class VideoDataCommand:
                 "comments": comments
             }
 
-            self.cliLogger.info(f"Collected video data: {video_data}")
-            self.cliAndFileLogger.info(json.dumps(video_data, indent=2))
+            self.__cliLogger.info(f"Collected video data: {video_data}")
+            self.__cliAndFileLogger.info(json.dumps(video_data, indent=2))
 
             if not os.path.exists('video_data.json'):
                 with open('video_data.json', 'w') as file:
@@ -66,7 +66,7 @@ class VideoDataCommand:
             print("Data saved successfully.")
 
         except Exception as e:
-            self.cliLogger.error(f"Error while executing command: {e}")
+            self.__cliLogger.error(f"Error while executing command: {e}")
             print("An error occurred:", e)
 
     def _validate_date(self, date_str):

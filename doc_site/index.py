@@ -7,29 +7,27 @@ from shared.storage_key import StorageKey
 
 class IndexCommand:
     def __init__(self):
-        self._data_storage = ConfigAndKeyValueStorageDataModel(APP_NAME).getKeyValueStorage_LoadUsingConfig()
+        self.__data_folder_path = ConfigAndKeyValueStorageDataModel(APP_NAME).getKeyValueStorage_LoadUsingConfig().get(StorageKey.DOC_SITE_DATA_FOLDER.value)
 
-        self.cli_command = CLICommand(
+        self.__cli_command = CLICommand(
             prog=Command.doc_site_index.cmd_name,
             description=Command.doc_site_index.desc
         )
 
-        self.cli_command.set_execution_callback(self._execute_command)
+        self.__cli_command.set_execution_callback(self._execute_command)
 
         self.ignored_folders = ['.git']
         self.ignored_files  = ['index.md']
 
     def run(self, input_args: str):
-        self.cli_command.parse_and_execute(input_args)
+        self.__cli_command.parse_and_execute(input_args)
 
     def _execute_command(self, _):
-        dataFolderPath = self.data_storage.get(StorageKey.DOC_SITE_DATA_FOLDER.value)
-
-        if not dataFolderPath: 
+        if not self.__data_folder_path: 
             print(f"Error: No record for key {StorageKey.DOC_SITE_DATA_FOLDER.value}.")
         else:
-            self.create_global_index(dataFolderPath)
-            self.create_category_indexes(dataFolderPath)
+            self.create_global_index(self.__data_folder_path)
+            self.create_category_indexes(self.__data_folder_path)
 
     def create_global_index(self, base_path):
         global_index_path = os.path.join(base_path, 'index.md')
@@ -57,7 +55,6 @@ class IndexCommand:
             category_index.write(f'# {category_name}\n\n')
 
             for file in os.listdir(category_path):
-                file_path = os.path.join(category_path, file)
                 if file.endswith('.md') and file != 'index.md' and file not in self.ignored_files:
                     category_index.write(f'- [{file}]({file})\n')
 

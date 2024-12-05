@@ -3,28 +3,27 @@ from shared.cli_command import CLICommand
 from shared.command import Command
 from shared.constants import APP_NAME
 from keyval_storage.config_and_key_value_storage_data_model import ConfigAndKeyValueStorageDataModel
-
 from shared.storage_key import StorageKey
 
 class ValidateCommand:
     def __init__(self):
-        self._data_storage = ConfigAndKeyValueStorageDataModel(APP_NAME).getKeyValueStorage_LoadUsingConfig()
+        self.__data_storage = ConfigAndKeyValueStorageDataModel(APP_NAME).getKeyValueStorage_LoadUsingConfig()
 
-        self.cli_command = CLICommand(
+        self.__cli_command = CLICommand(
             prog=Command.doc_site_validate.cmd_name,
             description=Command.doc_site_validate.desc
         )
 
-        self.cli_command.set_execution_callback(self._execute_command)
+        self.__cli_command.set_execution_callback(self._execute_command)
 
         self.ignored_folders = ['.git']
         self.ignored_files  = ['index.md']
 
     def run(self, input_args: str):
-        self.cli_command.parse_and_execute(input_args)
+        self.__cli_command.parse_and_execute(input_args)
 
     def _execute_command(self, _):
-        data = self._data_storage.get(StorageKey.DOC_SITE_DATA_FOLDER.value)
+        data = self.__data_storage.get(StorageKey.DOC_SITE_DATA_FOLDER.value)
 
         if not data: 
             print(f"Error: No record for key {StorageKey.DOC_SITE_DATA_FOLDER.value}.")
