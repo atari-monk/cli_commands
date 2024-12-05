@@ -3,11 +3,17 @@ from shared.command import Command
 from shared.log_setup import getConsoleFileLoggerConfig, getConsoleLoggerConfig
 from shared.cli_command import CLICommand
 from cli_logger.logger import setup_logger
+from shared.logger_config import LoggerConfig
 
 class VideoDataCommand:
     def __init__(self):
-        self.cliLogger = setup_logger("video_data_console", getConsoleLoggerConfig())
-        self.cliAndFileLogger = setup_logger("video_data_file", getConsoleFileLoggerConfig("video_data"))
+        self.loggerConfig = LoggerConfig(
+            cli_logger_name="video_data_console",
+            cli_and_file_logger_name="video_data_console_and_file",
+            log_file_name="video_data")
+        
+        self.cliLogger = setup_logger(self.loggerConfig.cli_logger_name, getConsoleLoggerConfig())
+        self.cliAndFileLogger = setup_logger(self.loggerConfig.cli_and_file_logger_name, getConsoleFileLoggerConfig(self.loggerConfig.log_file_name))
 
         self.cli_command = CLICommand(
             prog=Command.vid_write.cmd_name,
