@@ -1,13 +1,9 @@
-# report_task.py
-
-from task.constant import CONSOLE_LOG, LOG_REPORT_TASK, LOG_TASK_NAME
-from shared.log_setup import getConsoleLoggerConfig
-from shared.log_setup import getConsoleFileLoggerConfig
-from cli_logger.logger import setup_logger
+from shared.logger_config import create_loggers
+from task.estimate import TASK_LOG_FILE_NAME
 
 def reportTask(_):
-    cliLogger = setup_logger(f'{LOG_REPORT_TASK}_{CONSOLE_LOG}', getConsoleLoggerConfig())
-    cliAndFileLogger = setup_logger(LOG_REPORT_TASK, getConsoleFileLoggerConfig(LOG_TASK_NAME))
+    TASK_REPORT_LOGGER_NAME = 'report_task'
+    cliLogger, cliAndFileLogger = create_loggers(TASK_LOG_FILE_NAME, TASK_REPORT_LOGGER_NAME)
 
     project = input("State project: ")
     task = input("State task: ")
