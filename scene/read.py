@@ -25,7 +25,8 @@ class ReadCommand:
     def _execute_command(self, _):
         try:
             with open(self.__file_path, 'r') as file:
-                scenes_data = json.load(file)
+                scenes_data = [json.loads(line) for line in file]
+
                 self.__scene_crud.scenes = [Scene(**scene) for scene in scenes_data]
 
             for scene in self.__scene_crud.list_scenes():

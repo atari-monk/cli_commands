@@ -1,5 +1,4 @@
 import json
-import os
 from shared.cli_command import CLICommand
 from shared.command import Command
 from scene.model import Entity
@@ -30,12 +29,19 @@ class WriteCommand:
         self.__cli_command.parse_and_execute(input_args)
 
     def _execute_command(self, parsed_args):
+        scene_data = self._collect_scene_data(parsed_args)
+        self._add_entities_to_scene(scene_data)
+        self._save_scene_to_file(scene_data)
+        self.__log_final_scene_data(scene_data)
+        self.__cliAndFileLogger.info(f"Scene '{scene_data['name']}' saved to {self.__file_path} and scenes.log.")
+
+    def _collect_scene_data(self, parsed_args):
         name = parsed_args.name or input("Enter scene name: ").strip()
         path = parsed_args.path or input("Enter scene file path: ").strip()
         description = parsed_args.description or input("Enter scene description: ").strip()
         image = parsed_args.image or input("Enter optional image path (or leave blank): ").strip()
 
-        new_scene_data = {
+        return {
             "name": name,
             "description": description,
             "path": path,
@@ -43,27 +49,16 @@ class WriteCommand:
             "entities": []
         }
 
-        scenes = []
-        if os.path.exists(self.__file_path):
-            try:
-                with open(self.__file_path, 'r') as file:
-                    scenes = json.load(file)
-                    if not isinstance(scenes, list):
-                        raise ValueError("The file does not contain a valid list of scenes.")
-            except Exception as e:
-                print(f"Error loading existing scenes from file: {e}")
-                return
-
-        scenes.append(new_scene_data)
-
+    def _save_scene_to_file(self, scene_data):
         try:
-            with open(self.__file_path, 'w') as file:
-                json.dump(scenes, file, indent=2)
-            print(f"New scene '{name}' appended to {self.__file_path}.")
+            with open(self.__file_path, 'a') as file:
+                file.write(json.dumps(scene_data) + '\n')
+            return True
         except Exception as e:
-            print(f"Error saving updated scene data: {e}")
-            return
+            self.__cliLogger.exception(f"Error appending scene data to file: {e}")
+            return False
 
+    def _add_entities_to_scene(self, scene_data):
         while True:
             print("\nAdding a new entity:")
             entity_name = input("  Enter entity name: ").strip()
@@ -76,20 +71,16 @@ class WriteCommand:
                     components=[comp.strip() for comp in components if comp.strip()],
                     systems=[sys.strip() for sys in systems if sys.strip()]
                 )
-                new_scene_data['entities'].append(entity.model_dump())
-
-                with open(self.__file_path, 'w') as file:
-                    json.dump(scenes, file, indent=2)
-                print(f"Entity '{entity_name}' added to scene '{name}' and file updated.")
+                scene_data['entities'].append(entity.model_dump())
+                self.__cliLogger.info(f"Entity '{entity_name}' added to scene '{scene_data['name']}'.")
             except Exception as e:
-                print(f"Error creating or saving entity: {e}")
+                self.__cliLogger.exception(f"Error creating entity: {e}")
                 continue
 
             add_another = input("Add another entity? (y/n): ").strip().lower()
             if add_another != 'y':
                 break
 
-        self.__cliLogger.info(f"Final scene data: {new_scene_data}")
-        self.__cliAndFileLogger.info(json.dumps(new_scene_data, indent=2))
-
-        print("\nScene data has been logged and appended successfully!")
+    def __log_final_scene_data(self, scene_data):
+        self.__cliAndFileLogger.info(json.dumps(scene_data, indent=2))
+        self.__cliLogger.info("\nScene data has been logged and appended successfully!")
