@@ -1,6 +1,7 @@
 from shared.cli_command import CLICommand
 from shared.command import Command
 from shared.constants import APP_NAME
+from shared.logger_config import create_loggers
 from shared.storage_key import StorageKey
 from vid.vid_mp3_convert import VidToMp3
 from keyval_storage.config_and_key_value_storage_data_model import ConfigAndKeyValueStorageDataModel
@@ -8,7 +9,10 @@ from pytoolbox.file_system import ensure_folder_exists
 
 class VidToMp3Command:
     def __init__(self):
-        self._data_storage = ConfigAndKeyValueStorageDataModel(APP_NAME).getKeyValueStorage_LoadUsingConfig()        
+        self.cliLogger, self.cliAndFileLogger = create_loggers("vid_mp3")
+        
+        self._data_storage = ConfigAndKeyValueStorageDataModel(APP_NAME).getKeyValueStorage_LoadUsingConfig()
+        
         self.vid_to_mp3 = VidToMp3()
 
         self.cli_command = CLICommand(
