@@ -1,4 +1,4 @@
-from connection import ServerConnection
+from chat.server_connection import ServerConnection
 from message import Message
 import threading
 

@@ -1,4 +1,4 @@
-from connection import ClientConnection
+from chat.ClientConnection import ClientConnection
 from message import Message
 import threading
 
